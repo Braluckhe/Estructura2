@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        .main-hp {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-hp">
+            <h1>Mis propiedades</h1>
+            <h5>Laboratorio de EDD II</h5>
+            <form action="/search.html" method="get" class="input-group mb-3">
+                <input type="text" class="form-control" name="query" placeholder="Buscar propiedad" aria-label="Buscar propiedad" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+            </form>
+            <p>¿Buscas algo más?</p>
+            <button class="btn btn-dark">Busqueda por parametros</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

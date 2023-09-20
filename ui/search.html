@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Mis propiedades</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Resultados</h1>
+        <form action="/search.html" method="get" class="input-group mb-3">
+            <input type="text" class="form-control" name="query" placeholder="Buscar propiedad" aria-label="Buscar propiedad" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+        </form>
+        <div id="results" class="row"></div>
+    </div>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        var claveApi = 'pk.eyJ1IjoidG9ycm9iZXIiLCJhIjoiY2tzcXo4N3l4MGhkZDJ2cDdqaHN0eW03cSJ9.pqxKGDHiEvTkfeoFDBFzSw'
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const myParam = urlParams.get('query');
+            console.log(myParam)
+            eel.search_by_keyword(myParam)
+        }
+        eel.expose(renderResults)
+        function renderResults(results) {
+            var resultados = JSON.parse(results);
+            for (let i = 0; i < resultados.length; i++) {
+                const elemento = resultados[i];
+                $('#results').append(crearTarjeta(elemento))
+            }
+        }
+        function crearTarjeta (elemento) {
+            return `
+            <div class="card col-4">
+                <img class="card-img-top" src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l-marker+285A98(${elemento.longitude},${elemento.latitude})/${elemento.longitude},${elemento.latitude},15,0/200x200@2x?access_token=${claveApi}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">${elemento.title}</h5>
+                    <p class="card-text">❇️${elemento.city} - ${elemento.department} <br> 🛌Habitaciones: ${elemento.bedrooms} <br> 🚻Baños: ${elemento.bathrooms} <br> 🏜️Area:  ${elemento.surface_total} m2 </p>
+                    <h5> $ ${elemento.price}</h5>
+                    <span class="badge bg-danger">${elemento.operation_type}</span>
+                    <span class="badge bg-warning">${elemento.property_type}</span>
+                    <br>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+            `;
+        }
+    </script>
+    <script src="js/core.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
