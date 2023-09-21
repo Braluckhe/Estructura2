@@ -117,7 +117,17 @@ class Tree:
             if keyword.lower() in root.data.title.lower():
                 list.append(root.data.to_dict()) 
             self._search_tree_by_keyword(root.right, keyword, list)
-              
+    def search_node(self, id):
+        return self._search_node(self.root, id)
+
+    def _search_node(self, node, id):
+        if node:
+            if node.data.id == id:
+                return node
+            left_result = self._search_node(node.left, id)
+            if left_result:
+                return left_result
+            return self._search_node(node.right, id)
     def visualize(self, output_file="avl_tree"):
         dot = graphviz.Digraph(format='png', filename=output_file)
         def add_nodes_and_edges(node):
