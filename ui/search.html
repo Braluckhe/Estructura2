@@ -24,6 +24,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         var claveApi = 'pk.eyJ1IjoidG9ycm9iZXIiLCJhIjoiY2tzcXo4N3l4MGhkZDJ2cDdqaHN0eW03cSJ9.pqxKGDHiEvTkfeoFDBFzSw'
+        var propiedadSeleccionada = 0;
         window.onload = () => {
             const urlParams = new URLSearchParams(window.location.search);
             const myParam = urlParams.get('query');
@@ -49,7 +50,7 @@
                     <span class="badge bg-danger">${elemento.operation_type}</span>
                     <span class="badge bg-warning">${elemento.property_type}</span>
                     <br>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a href="info.html?nodo=${elemento.id}" class="btn btn-primary">Ver más</a>
                 </div>
             </div>
             `;

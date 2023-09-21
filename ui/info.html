@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Mis propiedades</a>
+        </div>
+    </nav>
+    <div class="container">
+        <img class="img-fluid" id="mapa" />
+        <h2 id="titulo"></h2>
+        <h3 id="accion"></h3>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Opciones de propiedad y Nodo
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <h1>Opciones de Nodo</h1>
+                    <button type="button" class="btn btn-primary w-100 mb-1" id="nodo1">Obtener el nivel del nodo</button>
+                    <button type="button" class="btn btn-warning w-100 mb-1" id="nodo2">Obtener el factor de balanceo del nodo</button>
+                    <button type="button" class="btn btn-danger w-100 mb-1" id="nodo3">Ver parentescos</button>
+                    <h1>Opciones de propiedad</h1>
+                    <a href="http://maps.google.com/maps?q=X,Y" type="button" class="btn btn-success w-100 mb-1" id="maps1" target="_blank">Ver propiedad en Google Maps</a>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Informacion de la propiedad
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body" id="propiedad">
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        var claveApi = 'pk.eyJ1IjoidG9ycm9iZXIiLCJhIjoiY2tzcXo4N3l4MGhkZDJ2cDdqaHN0eW03cSJ9.pqxKGDHiEvTkfeoFDBFzSw'
+        var propiedadSeleccionada = 0;
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const myParam = urlParams.get('nodo');
+            eel.getNodo(parseInt(myParam))
+        }
+        eel.expose(renderNode)
+        function renderNode(results) {
+            var resultado = JSON.parse(results);
+            var tabla = generarContenido(resultado)
+            var imagen = cargarMapa(resultado);
+            $('#mapa').attr('src',imagen)
+            $('#titulo').text(resultado.title)
+            $('#accion').text(resultado.property_type+' en '+resultado.operation_type)
+            $('#propiedad').append(tabla)
+            $('#maps1').attr('href', 'http://maps.google.com/maps?q='+resultado.latitude+','+resultado.longitude)
+        }
+        function cargarMapa(elemento) {
+            return `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l-marker+285A98(${elemento.longitude},${elemento.latitude})/${elemento.longitude},${elemento.latitude},15,0/600x200@2x?access_token=${claveApi}`
+        }
+        function generarContenido (elemento) {
+            return `
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>Ubicación de la propiedad</td>
+                        <td>${elemento.city} - ${elemento.department}</td>
+                    </tr>
+                    <tr>
+                        <td>Latitud y Longitud</td>
+                        <td>${elemento.longitude},${elemento.latitude}</td>
+                    </tr>
+                    <tr>
+                        <td>Valor</td>
+                        <td>$ ${elemento.price}</td>
+                    </tr>
+                    <tr>
+                        <td>Baños</td>
+                        <td>${elemento.bathrooms}</td>
+                    </tr>
+                    <tr>
+                        <td>Habitaciones</td>
+                        <td> ${elemento.bedrooms}</td>
+                    </tr>
+                    <tr>
+                        <td>Area</td>
+                        <td>${elemento.surface_total} m2</td>
+                    </tr>
+                </tbody>
+                </table>
+            `;
+        }
+    </script>
+    <script src="js/core.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
