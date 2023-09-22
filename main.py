@@ -32,6 +32,9 @@ def advanced_search(keyword, city, operation):
     results = avl_tree.advanced_search(keyword, ciudades[int(city)], operaciones[int(operation)])
     eel.renderResults(results)
 @eel.expose
+def visualizar():
+    avl_tree.visualize()
+@eel.expose
 def search_by_keyword(keyword):
     results = avl_tree.search_tree_by_keyword(keyword)
     eel.renderResults(results)

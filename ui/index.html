@@ -22,11 +22,12 @@
             <h1>Mis propiedades</h1>
             <h5>Laboratorio de EDD II</h5>
             <form action="/search.html" method="get" class="input-group mb-3">
-                <input type="text" class="form-control" name="query" placeholder="Buscar propiedad" aria-label="Buscar propiedad" aria-describedby="button-addon2">
+                <input type="text" class="form-control" name="query" placeholder="Buscar propiedad" aria-label="Buscar propiedad" aria-describedby="button-addon2" required>
                 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
             </form>
             <p>¿Buscas algo más?</p>
             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Busqueda por parametros</button>
+            <button class="btn btn-dark" id="visualizar">Mostrar grafo</button>
         </div>
     </div>
     <!-- Modal -->
@@ -39,11 +40,11 @@
             </div>
             <div class="modal-body">
                 <form action="/searchAdv.html" method="get">
-                    <input type="text" class="form-control mb-1" name="keyword" placeholder="Keyword de la propiedad" aria-label="Buscar propiedad" aria-describedby="button-addon2" id="propiedad">
-                    <select class="form-select mb-1" id="ciudad" name="ciudad">
+                    <input type="text" class="form-control mb-1" name="keyword" placeholder="Keyword de la propiedad" aria-label="Buscar propiedad" aria-describedby="button-addon2" id="propiedad" required>
+                    <select class="form-select mb-1" id="ciudad" name="ciudad" required>
                         <option selected>Seleccione ciudad</option>
                     </select>
-                    <select class="form-select mb-1" id="accion" name="accion">
+                    <select class="form-select mb-1" id="accion" name="accion" required>
                         <option selected>Seleccione accion</option>
                     </select>
                     <button class="btn btn-secondary" type="submit" id="button-addon2">Buscar</button>
@@ -60,6 +61,9 @@
     <script>
         window.onload = () => {
             eel.poblarInputs()
+            $('#visualizar').click(function() {
+                eel.visualizar()
+            })
         }
         eel.expose(inputs)
         function inputs(datos) {

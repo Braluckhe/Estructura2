@@ -10,8 +10,11 @@
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand" href="/">Mis propiedades</a>
+      
+          <!-- Botón a la derecha del branding -->
+          <button id="visualizar" class="btn btn-primary">Visualizar</button>
         </div>
-    </nav>
+    </nav>      
     <div class="container">
         <h1>Resultados</h1>
         <form action="/search.html" method="get" class="input-group mb-3">
@@ -30,8 +33,10 @@
             const keyword = urlParams.get('keyword');
             const ciudad = urlParams.get('ciudad');
             const accion = urlParams.get('accion')
-
             eel.advanced_search(keyword, ciudad, accion)
+            $('#visualizar').click(function() {
+                eel.visualizar()
+            })
         }
         eel.expose(renderResults)
         function renderResults(results) {
