@@ -26,10 +26,56 @@
                 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
             </form>
             <p>¿Buscas algo más?</p>
-            <button class="btn btn-dark">Busqueda por parametros</button>
+            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Busqueda por parametros</button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Mis propiedades</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/searchAdv.html" method="get">
+                    <input type="text" class="form-control mb-1" name="keyword" placeholder="Keyword de la propiedad" aria-label="Buscar propiedad" aria-describedby="button-addon2" id="propiedad">
+                    <select class="form-select mb-1" id="ciudad" name="ciudad">
+                        <option selected>Seleccione ciudad</option>
+                    </select>
+                    <select class="form-select mb-1" id="accion" name="accion">
+                        <option selected>Seleccione accion</option>
+                    </select>
+                    <button class="btn btn-secondary" type="submit" id="button-addon2">Buscar</button>
+                </form>              
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
         </div>
     </div>
     <script type="text/javascript" src="/eel.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        window.onload = () => {
+            eel.poblarInputs()
+        }
+        eel.expose(inputs)
+        function inputs(datos) {
+            var combobox = JSON.parse(datos)
+            for (let index = 0; index < combobox[0].length; index++) {
+                const element = combobox[0][index];
+                let opt = `<option value="${index}">${element}</option>`
+                $('#ciudad').append(opt)
+            }
+            for (let index = 0; index < combobox[1].length; index++) {
+                const element = combobox[1][index];
+                let opt = `<option value="${index}">${element}</option>`
+                $('#accion').append(opt)
+            }            
+        }
+    </script>
     <script src="js/core.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
 </body>

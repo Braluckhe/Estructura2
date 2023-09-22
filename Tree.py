@@ -119,6 +119,19 @@ class Tree:
             if keyword.lower() in root.data.title.lower():
                 list.append(root.data.to_dict()) 
             self._search_tree_by_keyword(root.right, keyword, list)
+    def advanced_search(self, keyword, city, action):
+        list = []
+        self._advanced_search(self.root, keyword, city, action, list)
+        json_string = json.dumps(list)
+        return json_string
+
+    def _advanced_search(self, root, keyword, city, action, list):
+        if root:
+            self._advanced_search(root.left, keyword, city, action, list)
+            if keyword.lower() in root.data.title.lower() and root.data.city == city and root.data.operation_type == action:
+                list.append(root.data.to_dict()) 
+            self._advanced_search(root.right, keyword, city, action, list)
+        
     def search_node(self, id):
         return self._search_node(self.root, id)
 

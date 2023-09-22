@@ -14,11 +14,23 @@ data["id"] = range(1, len(data) + 1)
 metric = "metric"
 second_metric = "surface_covered"
 avl_tree = Tree(metric, second_metric)
-
+ciudades = []
+operaciones = []
 # Insertar datos en el árbol AVL
 for index, row in data.iterrows():
     avl_tree.insert_node(row)
-
+    ciudades.append(row['city'])
+    operaciones.append(row['operation_type'])
+ciudades = list(set(ciudades))
+operaciones = list(set(operaciones))
+@eel.expose
+def poblarInputs():
+    inputs = [ciudades, operaciones]
+    eel.inputs(json.dumps(inputs))
+@eel.expose
+def advanced_search(keyword, city, operation):
+    results = avl_tree.advanced_search(keyword, ciudades[int(city)], operaciones[int(operation)])
+    eel.renderResults(results)
 @eel.expose
 def search_by_keyword(keyword):
     results = avl_tree.search_tree_by_keyword(keyword)
