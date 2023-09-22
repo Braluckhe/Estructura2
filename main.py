@@ -31,7 +31,22 @@ def getNodo(num):
     nodo = avl_tree.search_node(num)
     data = nodo.data.to_dict()
     json_string = json.dumps(data)
-    print(json_string)
     eel.renderNode(json_string)
+@eel.expose
+def getParentescos(nodoID):
+    nodo = avl_tree.search_node(nodoID)
+    padre = avl_tree.find_parent(nodo) 
+    abuelo = avl_tree.find_grandparent(nodo)
+    tio = avl_tree.find_uncle(nodo)
+    resultados = [padre.data.to_dict(), abuelo.data.to_dict(), tio.data.to_dict()]
+    json_string = json.dumps(resultados)
+    eel.renderParentescos(json_string)
+@eel.expose
+def nivelBalance(nodoID):
+    nodo = avl_tree.search_node(nodoID)
+    nivel = avl_tree.get_level(nodo)
+    balance = avl_tree.get_balance_factor(nodo)
+    mensaje = "El nivel del nodo es "+str(nivel)+" y el balance es de "+ str(balance)
+    eel.renderNivelBalance(mensaje)
 eel.init('ui')
 eel.start('index.html')

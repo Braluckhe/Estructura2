@@ -54,8 +54,10 @@ class Tree:
 
         if data[self.metric] < root.data[self.metric]:
             root.left = self.insert(root.left, data)
+            root.left.parent = root  # Configura la referencia al padre
         elif data[self.metric] > root.data[self.metric]:
             root.right = self.insert(root.right, data)
+            root.right.parent = root
         else:
             if data[self.second_metric] < root.data[self.second_metric]:
                 root.left = self.insert(root.left, data)
@@ -139,6 +141,33 @@ class Tree:
                 if node.right:
                     dot.edge(str(node.data[self.metric]), str(node.right.data[self.metric]))
                     add_nodes_and_edges(node.right)
-
         add_nodes_and_edges(self.root)
         dot.render(view=True)    
+    def find_parent(self, node):
+        if node is None:
+            return None  # No hay padre si el nodo es nulo
+        return node.parent
+
+    def find_grandparent(self, node):
+        if node is None or node.parent is None:
+            return None  # No hay abuelo si el nodo o su padre son nulos
+        return node.parent.parent
+    def find_uncle(self, node):
+        parent = self.find_parent(node)
+        grandparent = self.find_grandparent(node)
+
+        if parent is None or grandparent is None:
+            return None  # No hay tío si no hay padre o abuelo
+
+        if grandparent.left == parent:
+            return grandparent.right  # El tío está en el lado derecho del abuelo
+        else:
+            return grandparent.left  # El tío está en el lado izquierdo del abuelo
+    def get_level(self, node):
+        if node is None:
+            return -1  # El nivel de un nodo nulo es -1
+        return 1 + max(self.get_level(node.left), self.get_level(node.right))
+    def get_balance_factor(self, node):
+        if node is None:
+            return 0  # El factor de balanceo de un nodo nulo es 0
+        return self.height(node.left) - self.height(node.right)
